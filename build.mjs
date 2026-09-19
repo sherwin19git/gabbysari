@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { access, readFile, writeFile } from "node:fs/promises";
 
 try {
   const envFile = await readFile(".env", "utf8");
@@ -36,6 +36,13 @@ const config = Object.fromEntries(
 const output = `window.firebaseConfig = ${JSON.stringify(config, null, 2)};\n`;
 await writeFile("firebase-config.js", output, "utf8");
 
-const html = await readFile("sari-sari-pos.html", "utf8");
+let sourceFile = "sari-sari-pos.html";
+try {
+  await access(sourceFile);
+} catch {
+  sourceFile = "index.html";
+}
+
+const html = await readFile(sourceFile, "utf8");
 await writeFile("index.html", html, "utf8");
-console.log("Generated firebase-config.js and index.html");
+console.log(`Generated firebase-config.js and index.html from ${sourceFile}`);
