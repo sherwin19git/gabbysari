@@ -1,0 +1,7 @@
+{
+  "name": "sari-sari-pos",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs"
+  }
+}
